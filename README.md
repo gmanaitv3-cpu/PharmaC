@@ -16,15 +16,11 @@
 12. Dashboard
 13. Stock notifications
 
-# Installation
-- Watch the installation process on youtube below.
-
-[![youtube thumbnail](https://img.youtube.com/vi/nhMaD6MhJzU/0.jpg)](https://www.youtube.com/watch?v=nhMaD6MhJzU) 
-
- Or Follow these steps to install the application.
+# Installation 
+Follow these steps to install the application.
 1. Clone the Repository
 ```
-git clone https://github.com/MusheAbdulHakim/Pharmacy-management-system.git
+git clone https://github.com/gmanaitv3-cpu/PharmaC.git
 ```
 2. Go to project directory
 
@@ -67,8 +63,8 @@ php artisan key:generate
 ```
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=doccure
+DB_PORT=3307
+DB_DATABASE=pharmacy
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -94,7 +90,7 @@ http://127.0.0.1:8000
 
 ```
  email: admin@admin.com
- password: admin
+ password: password
 ```
 
 Theme: https://themeforest.net/item/doccure-doctor-appointment-booking-system-bootstrap-angular-template/28201296
