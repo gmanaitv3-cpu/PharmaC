@@ -20,13 +20,13 @@ class UserSeeder extends Seeder
         $user = User::firstOrCreate(
             ['email' => 'admin@admin.com'],
             [
-                'name' => 'Jamal Admin',
+                'name' => 'Gilbert Admin',
                 'password' => Hash::make('password'),
             ]
         );
 
         $user->forceFill([
-            'name' => 'Jamal Admin',
+            'name' => 'Gilbert Admin',
             'password' => Hash::make('password'),
         ])->save();
 
