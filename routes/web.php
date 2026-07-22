@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('products/expired',[ProductController::class,'expired'])->name('expired');
     Route::get('products/scan',[ProductController::class,'scan'])->name('products.scan');
     Route::post('products/scan',[ProductController::class,'lookupByBarcode'])->name('products.lookup');
+    Route::get('products/scan/result',[ProductController::class,'lookupByBarcodeGet'])->name('products.lookup.get');
     Route::resource('sales',SaleController::class)->except('show');
     Route::get('sales/reports',[SaleController::class,'reports'])->name('sales.report');
     Route::post('sales/reports',[SaleController::class,'generateReport']);

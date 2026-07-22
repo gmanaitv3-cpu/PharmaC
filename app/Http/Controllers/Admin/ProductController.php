@@ -175,6 +175,27 @@ class ProductController extends Controller
     }
 
     /**
+     * Lookup a product by barcode via GET for scanner redirects.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function lookupByBarcodeGet(Request $request)
+    {
+        $request->validate([
+            'barcode' => 'required|string',
+        ]);
+
+        $product = Product::with('purchase')->where('barcode', $request->query('barcode'))->first();
+
+        if (!$product) {
+            return redirect()->route('products.scan')->with('message', 'Product barcode not found')->with('alert-type', 'warning');
+        }
+
+        return redirect()->route('products.scan')->with('product', $product);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

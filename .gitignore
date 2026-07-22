@@ -11,5 +11,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+ngrok.exe
+public/ngrok.exe
 /.idea
 /.vscode

@@ -40,6 +40,9 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-lg">Lookup Product</button>
                 </form>
+                <div class="mt-3">
+                    <a href="/Webby/index.php" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary">Scan with camera</a>
+                </div>
                 @if(session('product'))
                     <div class="mt-4 text-start">
                         <h5>Product details</h5>

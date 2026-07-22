@@ -160,9 +160,18 @@ class PurchaseController extends Controller
         ]);
         $imageName = $purchase->image;
         if($request->hasFile('image')){
+            $oldImage = $purchase->image;
+            if(!empty($oldImage)){
+                $oldImagePath = public_path('storage/purchases/'.$oldImage);
+                if(file_exists($oldImagePath)){
+                    @unlink($oldImagePath);
+                }
+            }
+
             $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('storage/purchases'), $imageName);
         }
+
         $purchase->update([
             'product'=>$request->product,
             'category_id'=>$request->category,
@@ -174,6 +183,19 @@ class PurchaseController extends Controller
         ]);
         $notifications = notify("Purchase has been updated");
         return redirect()->route('purchases.index')->with($notifications);
+    }
+
+    public function destroy(Request $request)
+    {
+        $purchase = Purchase::findOrFail($request->id);
+        if(!empty($purchase->image)){
+            $imagePath = public_path('storage/purchases/'.$purchase->image);
+            if(file_exists($imagePath)){
+                @unlink($imagePath);
+            }
+        }
+
+        return $purchase->delete();
     }
 
     public function reports(){
@@ -191,16 +213,5 @@ class PurchaseController extends Controller
         return view('admin.purchases.reports',compact(
             'purchases','title'
         ));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request)
-    {
-        return Purchase::findOrFail($request->id)->delete();
     }
 }
