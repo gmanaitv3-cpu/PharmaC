@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -136,11 +137,17 @@ class UserController extends Controller
         ]);
         $imageName = $user->avatar;
         $password = $user->password;
-        if($request->hasFile('avatar')){
+
+        if ($request->hasFile('avatar')) {
+            if (!empty($user->avatar) && Storage::disk('public')->exists('users/' . $user->avatar)) {
+                Storage::disk('public')->delete('users/' . $user->avatar);
+            }
+
             $imageName = time().'.'.$request->avatar->extension();
             $request->avatar->move(public_path('storage/users'), $imageName);
         }
-        if(!empty($request->password) && ($user->password != $request->password)){
+
+        if (!empty($request->password) && ($user->password != $request->password)) {
             $password = Hash::make($request->password);
         }
         $user->update([
@@ -174,7 +181,11 @@ class UserController extends Controller
             'avatar' => 'nullable|file|image|mimes:jpg,jpeg,png,gif'
         ]);
         $imageName = $user->avatar;
-        if($request->hasFile('avatar')){
+        if ($request->hasFile('avatar')) {
+            if (!empty($user->avatar) && Storage::disk('public')->exists('users/' . $user->avatar)) {
+                Storage::disk('public')->delete('users/' . $user->avatar);
+            }
+
             $imageName = time().'.'.$request->avatar->extension();
             $request->avatar->move(public_path('storage/users'), $imageName);
         }

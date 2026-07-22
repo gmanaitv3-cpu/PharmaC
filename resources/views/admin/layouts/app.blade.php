@@ -8,7 +8,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ucfirst(AppSettings::get('app_name', 'App'))}} - {{ucfirst($title ?? '')}}</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{!empty(AppSettings::get('favicon')) ? asset('storage/'.AppSettings::get('favicon')) : asset('assets/img/favicon.png')}}">
+    @php
+        $faviconPath = AppSettings::get('favicon');
+        $faviconUrl = !empty($faviconPath)
+            ? asset('storage/' . $faviconPath) . (file_exists(public_path('storage/' . $faviconPath)) ? '?v=' . filemtime(public_path('storage/' . $faviconPath)) : '')
+            : asset('assets/img/favicon.png');
+    @endphp
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $faviconUrl }}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
     <!-- Fontawesome CSS -->

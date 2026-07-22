@@ -3,8 +3,14 @@
 			
 	<!-- Logo -->
 	<div class="header-left">
+		@php
+			$logoPath = AppSettings::get('logo');
+			$logoUrl = !empty($logoPath)
+				? asset('storage/' . $logoPath) . (file_exists(public_path('storage/' . $logoPath)) ? '?v=' . filemtime(public_path('storage/' . $logoPath)) : '')
+				: asset('assets/img/logo-white.png');
+		@endphp
 		<a href="{{route('dashboard')}}" class="logo">
-			<img src="@if(!empty(AppSettings::get('logo'))) {{asset('storage/'.AppSettings::get('logo'))}} @else{{asset('assets/img/logo-white.png')}} @endif" alt="Logo">
+			<img src="{{ $logoUrl }}" alt="Logo">
 		</a>
 		<a href="{{route('dashboard')}}" class="logo logo-small">
 			<img src="{{asset('assets/img/logo-small.png')}}" alt="Logo" width="30" height="30">

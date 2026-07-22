@@ -6,7 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ucfirst(AppSettings::get('app_name', 'App'))}} - {{ucfirst($title ?? '')}}</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{!empty(AppSettings::get('favicon')) ? asset('storage/'.AppSettings::get('favicon')) : asset('assets/img/favicon.png')}}">
+    @php
+        $faviconPath = AppSettings::get('favicon');
+        $faviconUrl = !empty($faviconPath)
+            ? asset('storage/' . $faviconPath) . (file_exists(public_path('storage/' . $faviconPath)) ? '?v=' . filemtime(public_path('storage/' . $faviconPath)) : '')
+            : asset('assets/img/favicon.png');
+    @endphp
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $faviconUrl }}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
 
@@ -30,7 +36,13 @@
             <div class="container">
                 <div class="loginbox">
                     <div class="login-left">
-                        <img class="img-fluid" src="{{!empty(AppSettings::get('logo')) ? asset('storage/'.AppSettings::get('logo')): asset('assets/img/logo-white.png')}}" alt="Logo">
+                        @php
+                            $plainLogoPath = AppSettings::get('logo');
+                            $plainLogoUrl = !empty($plainLogoPath)
+                                ? asset('storage/' . $plainLogoPath) . (file_exists(public_path('storage/' . $plainLogoPath)) ? '?v=' . filemtime(public_path('storage/' . $plainLogoPath)) : '')
+                                : asset('assets/img/logo-white.png');
+                        @endphp
+                        <img class="img-fluid" src="{{ $plainLogoUrl }}" alt="Logo">
                     </div>
                     <div class="login-right">
                         <div class="login-right-wrap">

@@ -12,19 +12,26 @@
     >
 
     @if( $filePath = \setting($field['name']))
+        @php
+            $disk = Arr::get($field, 'disk', 'public');
+            $fileExists = \Storage::disk($disk)->exists($filePath);
+            $fileUrl = \Storage::disk($disk)->url($filePath);
+            $previewUrl = $fileUrl . ($fileExists && file_exists(public_path('storage/' . $filePath)) ? '?v=' . filemtime(public_path('storage/' . $filePath)) : '');
+        @endphp
+
         <label class="text-danger" style="float:right; font-size: 0.8rem">
             <input type="checkbox" value="1" name="remove_file_{{$field['name']}}">
             {{ Arr::get($field, 'remove_label', 'Remove') }}
         </label>
-        @php $fileUrl = \Storage::disk(Arr::get($field, 'disk', 'public'))->url($filePath) @endphp
 
-        @if(in_array(pathinfo($filePath, PATHINFO_EXTENSION), ["gif", "jpg", "jpeg", "png", "tiff", "tif"]))
-            
+        @if($fileExists && in_array(pathinfo($filePath, PATHINFO_EXTENSION), ["gif", "jpg", "jpeg", "png", "tiff", "tif"]))
             <a href="{{ $fileUrl }}" target="_blank">
-                <img src="{{asset('storage/'.$filePath)}}" alt="{{ $field['name'] }}" class="{{ Arr::get( $field, 'preview_class') }}" style="{{ Arr::get($field, 'preview_style') }}"/>
+                <img src="{{ $previewUrl }}" alt="{{ $field['name'] }}" class="{{ Arr::get( $field, 'preview_class') }}" style="{{ Arr::get($field, 'preview_style') }}"/>
             </a>
-        @else
+        @elseif($fileExists)
             <a target="_blank" class="btn btn-light btn-sm" href="{{ $fileUrl }}">View {{ $field['label'] }}</a>
+        @else
+            <div class="text-warning">Previous file was removed or is missing. Upload a new one.</div>
         @endif
     @endif
 
